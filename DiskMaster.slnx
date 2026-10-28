@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DiskMaster/DiskMaster.csproj" />
+  <Project Path="DiskMaster.Tests/DiskMaster.Tests.csproj" />
+</Solution>

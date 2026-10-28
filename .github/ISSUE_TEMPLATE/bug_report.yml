@@ -1,0 +1,20 @@
+name: Signaler un problème
+description: Décrire un problème reproductible sans joindre de données personnelles.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version DiskMaster et version Windows
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Étapes, résultat attendu et résultat obtenu
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Diagnostic expurgé (facultatif)
+      description: Retirer les noms, chemins personnels et toute donnée sensible. Pour une faille, suivre SECURITY.md.

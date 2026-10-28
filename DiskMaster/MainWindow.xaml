@@ -1,0 +1,98 @@
+<Window x:Class="DiskMaster.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DiskMaster — Nettoyage du profil" Width="1080" Height="900"
+        MinWidth="920" MinHeight="760" Icon="/DiskMaster;component/Assets/DiskMaster.ico"
+        WindowStartupLocation="CenterScreen" Style="{StaticResource {x:Type Window}}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <Grid Margin="28" MinHeight="900"
+          Height="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/><RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="0,0,0,22">
+            <TextBlock Text="{Binding ApplicationVersion}" Foreground="{StaticResource Accent}" FontWeight="Bold" FontSize="13"/>
+            <TextBlock Text="Un peu d’espace, en toute clarté." FontSize="28" FontWeight="SemiBold" Margin="0,5,0,6"/>
+            <TextBlock Text="Analysez les caches de votre profil, examinez les fichiers, puis choisissez quoi supprimer."
+                       Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+        </StackPanel>
+        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,18">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="ESTIMATION DE LA SÉLECTION" Foreground="{StaticResource Muted}" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding SelectedSize}" FontSize="38" FontWeight="SemiBold" Margin="0,2"/>
+                    <TextBlock Text="{Binding SelectionLabel}" Foreground="{StaticResource Muted}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                    <Button Content="_Analyser" Command="{Binding ScanCommand}" ToolTip="Analyser sans supprimer de fichiers"/>
+                    <Button Content="_Nettoyer la sélection" Command="{Binding CleanCommand}" Style="{StaticResource PrimaryButton}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Catégories de nettoyage" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <TextBlock Text="Seuls les fichiers non modifiés depuis au moins 7 jours sont proposés. Les dossiers sont conservés."
+                               TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,0,0,14"/>
+                    <DataGrid ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"
+                              IsEnabled="{Binding IsIdle}" CanUserSortColumns="False" Height="174"
+                              AutomationProperties.Name="Catégories à nettoyer">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Choix" Width="60">
+                                <DataGridTemplateColumn.CellTemplate><DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              AutomationProperties.Name="{Binding Name}"/>
+                                </DataTemplate></DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Catégorie" Binding="{Binding Name}" Width="220" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Taille" Binding="{Binding Size}" Width="110" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Résultat de l’analyse" Binding="{Binding Status}" Width="*" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBlock Text="{Binding SelectedCategory.Description}" TextWrapping="Wrap" Margin="0,12,0,4"/>
+                    <TextBlock Text="{Binding SelectedCategory.Root}" TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource Muted}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Row="1" Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <DockPanel Margin="0,0,0,10">
+                        <Button DockPanel.Dock="Right" Content="Ouvrir le _dossier" Command="{Binding OpenFolderCommand}" Margin="10,0,0,0"/>
+                        <TextBlock Text="{Binding PreviewLabel}" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    </DockPanel>
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding PreviewFiles}" IsReadOnly="True"
+                              AutomationProperties.Name="Aperçu des fichiers analysés">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Chemin du fichier" Binding="{Binding Path}" Width="*"/>
+                            <DataGridTextColumn Header="Octets" Binding="{Binding SizeBytes, StringFormat=N0}" Width="110"/>
+                            <DataGridTextColumn Header="Modification (UTC)" Binding="{Binding LastWriteUtc, StringFormat=g}" Width="150"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+        <StackPanel Grid.Row="3" Margin="0,16,0,0">
+            <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" FontWeight="SemiBold" Margin="0,0,0,7"/>
+            <ProgressBar Value="{Binding Progress, Mode=OneWay}" Maximum="100" Height="5" Foreground="{StaticResource Accent}"
+                         AutomationProperties.Name="Progression de l’opération"/>
+            <DockPanel Margin="0,8,0,8">
+                <Button DockPanel.Dock="Right" Content="A_nnuler" Command="{Binding CancelCommand}" MinHeight="30" Padding="12,4" Margin="10,0,0,0"/>
+                <TextBlock Text="{Binding Status}" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="{StaticResource Muted}"
+                           AutomationProperties.LiveSetting="Polite"/>
+            </DockPanel>
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Content="Stockage Windows" Command="{Binding StorageCommand}" Padding="10,4" MinHeight="30" FontSize="12"/>
+                    <Button Content="Diagnostics" Command="{Binding DiagnosticsCommand}" Padding="10,4" MinHeight="30" FontSize="12" Margin="0"/>
+                </StackPanel>
+                <TextBlock Text="{Binding LastCleanup}" TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource Muted}" VerticalAlignment="Center"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+    </ScrollViewer>
+</Window>

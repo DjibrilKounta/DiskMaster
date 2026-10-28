@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Dessin géométrique original du projet, distribué sous sa licence MIT. -->
+  <rect x="8" y="8" width="240" height="240" fill="#007F70"/>
+  <rect x="48" y="53" width="160" height="150" fill="#FFFFFF"/>
+  <circle cx="128" cy="116" r="40" fill="#D9F2ED"/>
+  <circle cx="128" cy="116" r="13" fill="#007F70"/>
+  <path d="M128 116 L170 157" stroke="#007F70" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="176" cy="180" r="7" fill="#007F70"/>
+  <path d="M73 180 H112" stroke="#007F70" stroke-width="10" stroke-linecap="round"/>
+</svg>
