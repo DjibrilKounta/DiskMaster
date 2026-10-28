@@ -2,6 +2,16 @@
 
 Application Windows de nettoyage du profil utilisateur, développée en C# / WPF avec .NET 10.
 
+## Démonstration vidéo
+
+[![Voir la démonstration de DiskMaster](docs/media/diskmaster-demo.png)](https://github.com/DjibrilKounta/DiskMaster/releases/download/v0.2.0-alpha.1/DiskMaster-demo-reelle-musique.mp4)
+
+[Regarder ou télécharger la vidéo — 46 secondes, sous-titres et musique](https://github.com/DjibrilKounta/DiskMaster/releases/download/v0.2.0-alpha.1/DiskMaster-demo-reelle-musique.mp4).
+
+La démo utilise une analyse réelle du poste : 534 fichiers candidats, environ 2,02 Gio estimés au moment de la capture. Elle montre l'analyse, le choix des catégories et la confirmation ; le nettoyage est ensuite refusé, sans suppression de fichier. Les chemins personnels sont hors cadre. Les chiffres sont une estimation, pas un espace effectivement libéré.
+
+La musique instrumentale est une composition originale créée pour la vidéo. [Détails de la démonstration](docs/DEMO.md).
+
 ## Utilisation
 
 1. Lancez **Analyser** : aucune suppression n'est effectuée.
